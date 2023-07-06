@@ -30,8 +30,7 @@ client.connect()
 
 // Create and initialize schema
 const schema = `
-  DROP TABLE IF EXISTS TODOENTRIES;
-  CREATE TABLE TODOENTRIES (
+  CREATE TABLE IF NOT EXISTS TODOENTRIES (
     id SERIAL PRIMARY KEY,
     entry TEXT NOT NULL
   );
@@ -98,23 +97,6 @@ app.route('/date-time')
     });
   });
 
-
-// '/add_todo' route
-app.route('/add_todo')
-  .post(async (req, res) => {
-    try {
-      const { newItem } = req.body;
-  
-      // Insert the new item into the TodoEntries table
-      const insertQuery = 'INSERT INTO todoentries (entry) VALUES ($1)';
-      await client.query(insertQuery, [newItem]);
-  
-      res.status(201).json({ message: 'New item added successfully' });
-    } catch (error) {
-      console.error('Error adding new item:', error);
-      res.status(500).json({ message: 'Error adding new item' });
-    }
-  })
 
 // /delete route
 app.route('/delete/:id')
